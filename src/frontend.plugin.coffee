@@ -69,7 +69,7 @@ module.exports = (BasePlugin) ->
 	# Define Plugin
 	class FrontendAssetsPlugin extends BasePlugin
 		# Plugin name
-		name: 'frontend-assets'
+		name: 'frontend'
 
 		config:
 			frontendAssetsOptions:
