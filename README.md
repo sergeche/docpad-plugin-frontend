@@ -1,8 +1,8 @@
-A [DocPad](https://github.com/bevry/docpad) plugin that manages CSS and JS assets. Combined with Grunt.js’ Frontend task, creates cache-reset links to static files.
+A [DocPad](https://github.com/bevry/docpad) plugin that manages CSS and JS assets. Combined with Grunt.js’ [Frontend task](https://github.com/sergeche/grunt-frontend), creates cache-reset links to static files.
 
 The main reasons to use this plugin are:
 
-* Get compiled by Grunt.js resources and output links to resources with last modified date prefix to effectively reset cache every time resource is re-compiled.
+* Get compiled by Grunt.js resources and output links to them with last modified date prefix to effectively reset cache every time resource is re-compiled.
 * Organize resources into sets that can be selectively redefined in templates and documents.
 
 ## Installation ##
@@ -102,6 +102,23 @@ The final resource list retrieved by  `assets('js')` call for your document will
     page.js
     
 All sets are sorted by numeric suffix.
+
+## DocPad configuration ##
+
+In order to correctly handle cache-busted links with built-in DocPad server, you need to update your `docpad.coffee` config: add `serverAfter` event to `docpadConfig`.
+
+```coffee
+docpadConfig = {
+    events:
+        # Extend server so it can respond to cache-reset assets
+        serverAfter: ({server}) ->
+            server.get /^\/\d+\/(c|j)\//, (req, res, next) ->
+                req.url = req.url.replace /^\/\d+\//, '/'
+                next()
+}
+
+module.exports = docpadConfig
+```
 
 ****************
 
