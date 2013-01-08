@@ -1,7 +1,7 @@
 {
 	"name": "docpad-plugin-frontend",
 	"description": "CSS and JS assets manager, based on Frontend Grunt.js task",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"keywords": ["docpad", "docpad-plugin", "assets", "frontend", "font-end", "css", "js"],
 	"author": "Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)",
 	"maintainers": [

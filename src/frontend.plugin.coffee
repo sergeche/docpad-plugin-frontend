@@ -17,7 +17,7 @@ getCatalog = () ->
 # Splits string into array
 makeList = (str) ->
 	if _.isString str
-		_.compact str.split /\s*,\s*/
+		return _.compact str.split /\s*,\s*/
 	str
 
 grabResources = (collection, prefix) ->
