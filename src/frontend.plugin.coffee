@@ -84,14 +84,6 @@ module.exports = (BasePlugin) ->
 					return "/#{cacheToken}#{url}" if cacheToken? and url.charAt(0) == '/'
 					return url
 
-		contextualizeBefore: ({collection}, next) ->
-			if @docpad.getConfig().frontendDebug
-				collection.forEach (file) ->
-					if file.type is 'document' and not /\-debug$/.test file.get('basename')
-						file.set('basename', file.get('basename') + '-debug')
-
-			next()
-
 		generateBefore: (opts, next) ->
 			catalog = null
 			next()
@@ -111,11 +103,14 @@ module.exports = (BasePlugin) ->
 					if item of catalog
 						r = catalog[item]
 						if isDebug
-							if prefix is 'css'
+							if r.files.length and _.isString r.files[0]
+								# looks like a CSS resources
+								# for CSS assets, we don’t have to return dependency list
+								# since CSS has native support of resource import (e.g. @import)
 								return r.files[0]
-							else
-								return _.map r.files, (f) ->
-									f.file
+
+
+							return _.pluck r.files, 'file'
 
 						return config.urlTransformer item, r[cacheToken]
 
