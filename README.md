@@ -17,12 +17,12 @@ Whenever you call `assets(type)` method from template, it will collect resource 
 
 ## Simple example ##
 
-In your `layout` template, let’s say `default.html.eco`, define list of CSS and JS resources in document’s meta data. You can separate file entries with with comma:
+In your `layout` template, let’s say `default.html.eco`, define list of CSS and JS resources in document’s meta data with `css` and `js` properties. You can use any name for resources: `js`, `jsFooter`, `styles` etc.
 
 ```html
 ---
 css: "/css/style.css"
-js:  "/js/fileA.js,/js/fileB.js"
+js:  ["/js/fileA.js", "/js/fileB.js"]
 ---
 <!doctype html>
 <html>
@@ -77,7 +77,7 @@ For example, in `default.html.eco` template you can define the following resourc
 
     ---
     js: "fileA.js"
-    js2: "fileB.js,fileC.js"
+    js2: ["fileB.js", "fileC.js"]
     js3: "fileD.js"
     ---
 
@@ -102,6 +102,21 @@ The final resource list retrieved by  `assets('js')` call for your document will
     page.js
     
 All sets are sorted by numeric suffix.
+
+## Debug mode ##
+
+If you’re using [grunt-frontend](https://github.com/sergeche/grunt-frontend) task to build CSS and JS, you can use a special _debug_ mode. In this mode, `assets()` method will return a list of _source files_ instead minified ones.
+
+To enable debug mode, you need to set `frontendDebug` config property to `true`. It’s best to use different DocPad environment for debugging:
+
+```coffee
+docpadConfig = {
+    …
+    environments:
+        debug:
+            frontendDebug: true
+}
+```
 
 ## DocPad configuration ##
 
