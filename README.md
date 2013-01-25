@@ -118,6 +118,10 @@ docpadConfig = {
 }
 ```
 
+To view your web-site in debug mode, pass `debug` environment option to DocPad:
+
+    docpad run --env=debug
+
 ## DocPad configuration ##
 
 In order to correctly handle cache-busted links with built-in DocPad server, you need to update your `docpad.coffee` config: add `serverAfter` event to `docpadConfig`.
