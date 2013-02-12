@@ -48,7 +48,7 @@ collectResources = (documentModel, prefix) ->
 	# expand all assets
 	assets = for k, v of res
 		order = -1
-		if m = /(\d+)$/.test(k)
+		if m = k.match(/(\d+)$/)
 			order = parseInt m[1]
 		{
 			order: order
