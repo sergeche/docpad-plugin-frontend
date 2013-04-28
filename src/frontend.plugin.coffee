@@ -64,7 +64,7 @@ collectResources = (documentModel, prefix) ->
 	# expand all assets
 	assets = for k, v of res
 		order = -1
-		if m = /(\d+)$/.test(k)
+		if m = k.match(/(\d+)$/)
 			order = parseInt m[1]
 		{
 			order: order
@@ -139,11 +139,14 @@ module.exports = (BasePlugin) ->
 					if item of _catalog
 						r = _catalog[item]
 						if isDebug
-							if prefix is 'css'
+							if r.files.length and _.isString r.files[0]
+								# looks like a CSS resources
+								# for CSS assets, we don’t have to return dependency list
+								# since CSS has native support of resource import (e.g. @import)
 								return r.files[0]
-							else
-								return _.map r.files, (f) ->
-									f.file
+
+
+							return _.pluck r.files, 'file'
 
 						return config.urlTransformer item, r[cacheToken]
 
