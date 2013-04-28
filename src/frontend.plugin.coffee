@@ -20,6 +20,25 @@ makeList = (str) ->
 		return _.compact str.split /\s*,\s*/
 	str
 
+# Collects all meta-data for given model, including ancestor
+# layouts. This data can be used for further sync lookups
+collectMeta = (model, callback) ->
+	data = []
+	next = (err, ctx) ->
+		if err
+			return callback err, null
+
+		if ctx
+			data.push ctx.getMeta().toJSON()
+
+			if ctx.hasLayout()
+				return ctx.getLayout(next)
+
+		callback null, data
+
+	next(null, model)
+
+
 grabResources = (collection, prefix) ->
 	res = {}
 	re = new RegExp('^' + prefix + '(\\d+)?$')
@@ -32,13 +51,10 @@ grabResources = (collection, prefix) ->
 # Collects all resources from document model (transformed document and its layouts)
 # with specified prefix
 collectResources = (documentModel, prefix) ->
-	files = [grabResources documentModel.getMeta().toJSON(), prefix]
-
-	# grab resources from layouts
-	ctx = documentModel
-	while ctx.hasLayout()
-		ctx = ctx.layout
-		files.push grabResources ctx.getMeta().toJSON(), prefix
+	allMeta = documentModel.get('__allMeta')
+	files = []
+	if allMeta?
+		files = allMeta.map (meta) -> grabResources meta, prefix
 
 	# merge all resource into a singe set
 	res = {}
@@ -84,17 +100,29 @@ module.exports = (BasePlugin) ->
 					return "/#{cacheToken}#{url}" if cacheToken? and url.charAt(0) == '/'
 					return url
 
-		contextualizeBefore: ({collection}, next) ->
-			if @docpad.getConfig().frontendDebug
-				collection.forEach (file) ->
-					if file.type is 'document' and not /\-debug$/.test file.get('basename')
-						file.set('basename', file.get('basename') + '-debug')
-
-			next()
-
 		generateBefore: (opts, next) ->
 			catalog = null
 			next()
+
+		renderBefore: (opts, next) ->
+			{collection, templateData} = opts
+			docs = collection.filter (file) -> file.type == 'document'
+
+			if not docs.length
+				return next()
+
+			processedDocs = 0
+			errors = 0
+			docs.forEach (model) ->
+				collectMeta model, (err, meta) ->
+					processedDocs++
+					if err
+						errors++
+						return next(err)
+
+					model.set '__allMeta', meta
+					if processedDocs >= docs.length
+						next()
 
 
 		extendTemplateData: ({templateData}) ->
@@ -105,11 +133,11 @@ module.exports = (BasePlugin) ->
 				res = collectResources model, prefix
 				cacheToken = config.cacheReset or ''
 				isDebug = docpad.getConfig().frontendDebug
-				catalog = getCatalog()
+				_catalog = getCatalog()
 
 				_.flatten res.map (item) ->
-					if item of catalog
-						r = catalog[item]
+					if item of _catalog
+						r = _catalog[item]
 						if isDebug
 							if prefix is 'css'
 								return r.files[0]
