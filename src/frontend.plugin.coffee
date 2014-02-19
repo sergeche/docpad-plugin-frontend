@@ -12,6 +12,8 @@ getCatalog = () ->
 			catalog = JSON.parse fs.readFileSync catalogFile, 'utf8'
 		catch e
 
+	catalog = {} if not catalog
+
 	return catalog
 
 # Splits string into array
