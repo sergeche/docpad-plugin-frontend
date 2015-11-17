@@ -133,7 +133,12 @@ module.exports = (BasePlugin) ->
 
 			getAssets = (model, prefix) ->
 				res = collectResources model, prefix
-				cacheToken = config.cacheReset or ''
+
+				if docpad.getConfig().frontendCacheReset?
+					cacheToken = docpad.getConfig().frontendCacheReset 
+				else
+					cacheToken = config.cacheReset or ''
+
 				isDebug = docpad.getConfig().frontendDebug
 				_catalog = getCatalog()
 
