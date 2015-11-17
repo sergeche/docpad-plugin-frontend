@@ -1,31 +1,39 @@
 {
-	"name": "docpad-plugin-frontend",
-	"description": "CSS and JS assets manager, based on Frontend Grunt.js task",
-	"version": "2.0.1",
-	"keywords": ["docpad", "docpad-plugin", "assets", "frontend", "font-end", "css", "js"],
-	"author": "Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)",
-	"maintainers": [
-		"Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)"
-	],
-	"contributors": [
-		"Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)"
-	],
-	"bugs": {
-		"url": "https://github.com/sergeche/docpad-plugin-frontend/issues"
-	},
-	"repository" : {
-		"type": "git",
-		"url": "https://github.com/sergeche/docpad-plugin-frontend.git"
-	},
-	"engines" : {
-		"node": ">=0.4.0",
-		"docpad": ">=6.3.x"
-	},
-	"dependencies": {
-		"underscore": "1.3.x"
-	},
-	"devDependencies": {
-		"coffee-script": "1.3.x"
-	},
-	"main": "./out/frontend.plugin.js"
+  "name": "docpad-plugin-frontend",
+  "description": "CSS and JS assets manager, based on Frontend Grunt.js task",
+  "version": "2.1.0",
+  "keywords": [
+    "docpad",
+    "docpad-plugin",
+    "assets",
+    "frontend",
+    "font-end",
+    "css",
+    "js"
+  ],
+  "author": "Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)",
+  "maintainers": [
+    "Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)"
+  ],
+  "contributors": [
+    "Sergey Chikuyonok <serge.che@gmail.com> (http://chikuyonok.ru)"
+  ],
+  "bugs": {
+    "url": "https://github.com/sergeche/docpad-plugin-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergeche/docpad-plugin-frontend.git"
+  },
+  "engines": {
+    "node": ">=0.4.0",
+    "docpad": ">=6.3.x"
+  },
+  "dependencies": {
+    "underscore": "1.3.x"
+  },
+  "devDependencies": {
+    "coffee-script": "1.3.x"
+  },
+  "main": "./out/frontend.plugin.js"
 }
